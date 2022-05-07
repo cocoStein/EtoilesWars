@@ -1,15 +1,17 @@
 import pygame
 from random import *
+from pygame.math import Vector2
 
 pygame.font.init()
 
 # Variables
 WIDTH = 1080
 HEIGHT = 720
-GAME_RUNNING = True
-click = False
-clock = pygame.time.Clock()
+FPS = 120
+UP = Vector2(0, -1)
 
+inputMapVelocity = [False, False]
+inputMapRotation = [False, False]
 
 # colors
 WHITE = (255, 255, 255)
@@ -29,6 +31,9 @@ mini_police = pygame.font.Font(None, 20)
 mega_police = pygame.font.Font(None, 150)
 FONT = pygame.font.Font(None, 32)
 
+# Sprites
+vso_sprites = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/EtoilesWars/assets/imgs/vso.png')
+
 def draw_text(text, font, color, surface, x, y):
     # draw text on a screen
 
@@ -44,3 +49,23 @@ def Rot_center(image, angle):
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
+
+
+
+class GameObject:
+    def __init__(self, position, sprite, velocity):
+        self.position = Vector2(position)
+        self.sprite = sprite
+        self.radius = sprite.get_width() / 2
+        self.velocity = Vector2(velocity)
+
+    def draw(self, surface):
+        blit_position = self.position - Vector2(self.radius)
+        surface.blit(self.sprite, blit_position)
+
+    def move(self):
+        self.position = self.position + self.velocity
+
+    def collides_with(self, other_obj):
+        distance = self.position.distance_to(other_obj.position)
+        return distance < self.radius + other_obj.radius

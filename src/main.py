@@ -1,70 +1,73 @@
-import pygame
-
 from src.settings import *
+from spaceship import *
 
-pygame.init()
-pygame.time.set_timer(pygame.USEREVENT, 1000)
+class EtoilesVSO:
+  def __init__(self):
+    self._init_pygame()
+    self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    self.clock = pygame.time.Clock()
+    self.spaceship = Spaceship((400, 300))
 
-# création de la fenêtre
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Etoiles Vso")
+  def _init_pygame(self):
+    pygame.init()
+    pygame.display.set_caption("Etoiles Vso")
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+
+  def main_loop(self):
+    while True:
+      self._handle_input()
+      self._process_game_logic()
+      self._draw()
 
 
-def main_window():
-  GAME_RUNNING = True
+  def _handle_input(self):
 
-  x_pose = 50
-  y_pose = 50
-
-  inputMap = [False, False, False, False]
-
-  while GAME_RUNNING:
-
-    # EVENT
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
-        GAME_RUNNING = False
+        quit()
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_w:
-          inputMap[0] = True;
+          inputMapVelocity[0] = True;
         if event.key == pygame.K_s:
-          inputMap[1] = True;
+          inputMapVelocity[1] = True;
         if event.key == pygame.K_a:
-          inputMap[2] = True;
+          inputMapRotation[0] = True;
         if event.key == pygame.K_d:
-          inputMap[3] = True;
+          inputMapRotation[1] = True;
       if event.type == pygame.KEYUP:
         if event.key == pygame.K_w:
-          inputMap[0] = False;
+          inputMapVelocity[0] = False;
         if event.key == pygame.K_s:
-          inputMap[1] = False;
+          inputMapVelocity[1] = False;
         if event.key == pygame.K_a:
-          inputMap[2] = False;
+          inputMapRotation[0] = False ;
         if event.key == pygame.K_d:
-          inputMap[3] = False;
+          inputMapRotation[1] = False ;
 
-    vso_speedX = 0
-    if inputMap[2]: vso_speedX -= 1.5
-    if inputMap[3]: vso_speedX += 1.5
-    vso_speedY = 0
-    if inputMap[0]: vso_speedY -= 1.5s
-    if inputMap[1]: vso_speedY += 1.5
 
-    x_pose += vso_speedX
-    y_pose += vso_speedY
+  def _process_game_logic(self):
 
-        # background
-    screen.fill(DARKGRAY)
+    # Rotation spaceship
+    if inputMapRotation[0]: self.spaceship.rotate(clockwise = True)
+    if inputMapRotation[1]: self.spaceship.rotate(clockwise = False)
 
-    #VSO tst
-    vso = pygame.Rect(x_pose, y_pose, 50, 50)
-    pygame.draw.rect(screen, RED, vso, 25)
+    # mouvement spaceship
+    self.spaceship.velocity = (0, 0)
+    if inputMapVelocity[0]: self.spaceship.velocity += Vector2(0, -2)
+    if inputMapVelocity[1]: self.spaceship.velocity += Vector2(0, 2)
+    self.spaceship.move()
+
+
+
+  def _draw(self):
+    self.screen.fill(DARKGRAY)
+    self.spaceship.draw(self.screen)
+
 
     # Flip the display
+    self.clock.tick(FPS)
     pygame.display.flip()
 
 
-main_window()
-
-
-#pygame.display.flip()
+if __name__ == "__main__":
+  EtoilesVSO().main_loop()
