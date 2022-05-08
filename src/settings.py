@@ -1,5 +1,4 @@
 import pygame
-from random import *
 from pygame.math import Vector2
 
 pygame.font.init()

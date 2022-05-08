@@ -1,5 +1,5 @@
 from src.settings import *
-from spaceship import *
+from spaceship import Spaceship
 
 class EtoilesVSO:
   def __init__(self):
@@ -17,6 +17,7 @@ class EtoilesVSO:
     while True:
       self._handle_input()
       self._process_game_logic()
+      #self.spaceship.update(self.screen)
       self._draw()
 
 
@@ -44,25 +45,37 @@ class EtoilesVSO:
         if event.key == pygame.K_d:
           inputMapRotation[1] = False ;
 
+        if event.key == pygame.K_UP:
+          self.spaceship.get_health(200)
+        if event.key == pygame.K_DOWN:
+          self.spaceship.get_damage(200)
+
 
   def _process_game_logic(self):
 
     # Rotation spaceship
-    if inputMapRotation[0]: self.spaceship.rotate(clockwise = True)
-    if inputMapRotation[1]: self.spaceship.rotate(clockwise = False)
+    if inputMapRotation[0]: self.spaceship.rotate(clockwise=False)
+    if inputMapRotation[1]: self.spaceship.rotate(clockwise=True)
 
-    # mouvement spaceship
+    # Mouvement spaceship
     self.spaceship.velocity = (0, 0)
-    if inputMapVelocity[0]: self.spaceship.velocity += Vector2(0, -2)
-    if inputMapVelocity[1]: self.spaceship.velocity += Vector2(0, 2)
+    if inputMapVelocity[0]: self.spaceship.accelerate()
+    #if inputMapVelocity[1]: self.spaceship.velocity += Vector2(cos(self.spaceship.angle) * 2, sin(self.spaceship.angle) * 2)
     self.spaceship.move()
+
+    if self.spaceship.position.x >= WIDTH: self.spaceship.position.x = 1
+    if self.spaceship.position.x <= 0: self.spaceship.position.x = WIDTH
+    if self.spaceship.position.y >= HEIGHT: self.spaceship.position.y = 1
+    if self.spaceship.position.y <= 0: self.spaceship.position.y = HEIGHT
+
+
 
 
 
   def _draw(self):
     self.screen.fill(DARKGRAY)
     self.spaceship.draw(self.screen)
-
+    self.spaceship.advanced_health(self.screen)
 
     # Flip the display
     self.clock.tick(FPS)
