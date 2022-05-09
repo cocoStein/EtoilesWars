@@ -1,5 +1,6 @@
 from src.settings import *
 from spaceship import Spaceship
+from laser import Laser
 
 class EtoilesVSO:
   def __init__(self):
@@ -7,6 +8,7 @@ class EtoilesVSO:
     self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
     self.clock = pygame.time.Clock()
     self.spaceship = Spaceship((400, 300))
+    self.laser = Laser(0, (400, 300))
 
   def _init_pygame(self):
     pygame.init()
@@ -28,27 +30,33 @@ class EtoilesVSO:
         quit()
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_w:
-          inputMapVelocity[0] = True;
+          inputMapVelocity[0] = True
         if event.key == pygame.K_s:
-          inputMapVelocity[1] = True;
+          inputMapVelocity[1] = True
         if event.key == pygame.K_a:
-          inputMapRotation[0] = True;
+          inputMapRotation[0] = True
         if event.key == pygame.K_d:
-          inputMapRotation[1] = True;
-      if event.type == pygame.KEYUP:
-        if event.key == pygame.K_w:
-          inputMapVelocity[0] = False;
-        if event.key == pygame.K_s:
-          inputMapVelocity[1] = False;
-        if event.key == pygame.K_a:
-          inputMapRotation[0] = False ;
-        if event.key == pygame.K_d:
-          inputMapRotation[1] = False ;
+          inputMapRotation[1] = True
+        if event.key == pygame.K_SPACE:
+          self.laser.move()
 
         if event.key == pygame.K_UP:
           self.spaceship.get_health(200)
         if event.key == pygame.K_DOWN:
           self.spaceship.get_damage(200)
+
+      if event.type == pygame.KEYUP:
+        if event.key == pygame.K_w:
+          inputMapVelocity[0] = False
+        if event.key == pygame.K_s:
+          inputMapVelocity[1] = False
+        if event.key == pygame.K_a:
+          inputMapRotation[0] = False
+        if event.key == pygame.K_d:
+          inputMapRotation[1] = False
+
+
+
 
 
   def _process_game_logic(self):
@@ -76,6 +84,8 @@ class EtoilesVSO:
     self.screen.fill(DARKGRAY)
     self.spaceship.draw(self.screen)
     self.spaceship.advanced_health(self.screen)
+
+    self.laser.draw(self.screen)
 
     # Flip the display
     self.clock.tick(FPS)

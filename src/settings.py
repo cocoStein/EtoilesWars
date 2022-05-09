@@ -1,5 +1,6 @@
 import pygame
 from pygame.math import Vector2
+from math import cos, sin
 
 pygame.font.init()
 
@@ -31,7 +32,8 @@ mega_police = pygame.font.Font(None, 150)
 FONT = pygame.font.Font(None, 32)
 
 # Sprites
-vso_sprites = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/EtoilesWars/assets/imgs/vso.png')
+vso_sprite = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/EtoilesWars/assets/imgs/vso.png')
+laser_sprite = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/EtoilesWars/assets/imgs/laser.png')
 
 def draw_text(text, font, color, surface, x, y):
     # draw text on a screen
@@ -40,15 +42,6 @@ def draw_text(text, font, color, surface, x, y):
     textrect = textobj.get_rect()
     textrect.topleft = (x, y)
     surface.blit(textobj, textrect)
-
-def Rot_center(image, angle):
-    orig_rect = image.get_rect()
-    rot_image = pygame.transform.rotate(image, angle)
-    rot_rect = orig_rect.copy()
-    rot_rect.center = rot_image.get_rect().center
-    rot_image = rot_image.subsurface(rot_rect).copy()
-    return rot_image
-
 
 
 class GameObject:

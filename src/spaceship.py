@@ -1,4 +1,4 @@
-from settings import GameObject, Vector2, UP, vso_sprites, pygame, GREEN, PURPLE
+from settings import GameObject, Vector2, UP, vso_sprite, pygame, GREEN
 from pygame.transform import rotozoom
 
 
@@ -21,7 +21,7 @@ class Spaceship(GameObject):
         self.health_ratio = self.max_health / self.health_bar_length
         self.health_change_speed = 5
 
-        super().__init__(position, vso_sprites, Vector2(0))
+        super().__init__(position, vso_sprite, Vector2(0))
 
     def rotate(self, clockwise=True):
         sign = 1 if clockwise else -1
