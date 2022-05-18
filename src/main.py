@@ -1,4 +1,4 @@
-from src.settings import *
+from settings import *
 from spaceship import Spaceship
 from laser import Laser
 
@@ -8,7 +8,7 @@ class EtoilesVSO:
     self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
     self.clock = pygame.time.Clock()
     self.spaceship = Spaceship((400, 300))
-    self.laser = Laser(0, (400, 300))
+    #self.laser = Laser(0, (400, 300))
 
   def _init_pygame(self):
     pygame.init()
@@ -38,8 +38,7 @@ class EtoilesVSO:
         if event.key == pygame.K_d:
           inputMapRotation[1] = True
         if event.key == pygame.K_SPACE:
-          self.laser.move()
-
+          laserMap.append(Laser(self.spaceship.angle, (self.spaceship.position.x, self.spaceship.position.y)))
         if event.key == pygame.K_UP:
           self.spaceship.get_health(200)
         if event.key == pygame.K_DOWN:
@@ -76,8 +75,9 @@ class EtoilesVSO:
     if self.spaceship.position.y >= HEIGHT: self.spaceship.position.y = 1
     if self.spaceship.position.y <= 0: self.spaceship.position.y = HEIGHT
 
-
-
+    for laser in laserMap:
+      laser.move()
+    
 
 
   def _draw(self):
@@ -85,7 +85,8 @@ class EtoilesVSO:
     self.spaceship.draw(self.screen)
     self.spaceship.advanced_health(self.screen)
 
-    self.laser.draw(self.screen)
+    for laser in laserMap:
+      laser.draw(self.screen)
 
     # Flip the display
     self.clock.tick(FPS)

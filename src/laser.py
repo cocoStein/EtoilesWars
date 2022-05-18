@@ -1,4 +1,4 @@
-from settings import GameObject, WHITE, UP, Vector2, laser_sprite, cos, sin
+from settings import GameObject, WHITE, UP, Vector2, laser_sprite
 from pygame.transform import rotozoom
 
 class Laser(GameObject):
@@ -10,7 +10,7 @@ class Laser(GameObject):
         self.angle = angle
         self.direction = Vector2(UP)
 
-        super().__init__(position, laser_sprite, Vector2(1, 1))
+        super().__init__(position, laser_sprite, Vector2(10, 0))
 
     def draw(self, surface):
         angle = self.direction.angle_to(UP)

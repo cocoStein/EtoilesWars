@@ -4,7 +4,7 @@ from pygame.transform import rotozoom
 
 class Spaceship(GameObject):
     maneuverability = 2
-    acceleretion = 2
+    acceleretion = 3
 
     def __init__(self, position):
         # Make a copy of the original UP vector

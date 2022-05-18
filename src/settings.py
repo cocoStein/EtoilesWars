@@ -12,6 +12,7 @@ UP = Vector2(0, -1)
 
 inputMapVelocity = [False, False]
 inputMapRotation = [False, False]
+laserMap = []
 
 # colors
 WHITE = (255, 255, 255)
@@ -32,8 +33,8 @@ mega_police = pygame.font.Font(None, 150)
 FONT = pygame.font.Font(None, 32)
 
 # Sprites
-vso_sprite = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/EtoilesWars/assets/imgs/vso.png')
-laser_sprite = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/EtoilesWars/assets/imgs/laser.png')
+vso_sprite = pygame.image.load('../assets/imgs/vso.png')
+laser_sprite = pygame.image.load('../assets/imgs/laser.png')
 
 def draw_text(text, font, color, surface, x, y):
     # draw text on a screen
