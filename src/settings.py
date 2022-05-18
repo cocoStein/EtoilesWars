@@ -1,6 +1,6 @@
 import pygame
 from pygame.math import Vector2
-from math import cos, sin
+
 
 pygame.font.init()
 
@@ -12,7 +12,6 @@ UP = Vector2(0, -1)
 
 inputMapVelocity = [False, False]
 inputMapRotation = [False, False]
-laserMap = []
 
 # colors
 WHITE = (255, 255, 255)
@@ -33,7 +32,7 @@ mega_police = pygame.font.Font(None, 150)
 FONT = pygame.font.Font(None, 32)
 
 # Sprites
-vso_sprite = pygame.image.load('../assets/imgs/vso.png')
+vso_sprite = pygame.image.load('../assets/imgs/pixil-frame-0 (1).png')
 laser_sprite = pygame.image.load('../assets/imgs/laser.png')
 
 def draw_text(text, font, color, surface, x, y):

@@ -1,13 +1,16 @@
 from settings import GameObject, Vector2, UP, vso_sprite, pygame, GREEN
 from pygame.transform import rotozoom
+from laser import Laser
 
 
 class Spaceship(GameObject):
     maneuverability = 2
     acceleretion = 3
+    laser_speed = 3
 
-    def __init__(self, position):
+    def __init__(self, position, shoot_laser):
         # Make a copy of the original UP vector
+        self.shoot_laser = shoot_laser
         self.direction = Vector2(UP)
         self.angle = 0
 
@@ -71,3 +74,9 @@ class Spaceship(GameObject):
         pygame.draw.rect(screen, (255, 0, 0), health_bar)
         pygame.draw.rect(screen, transition_color, transition_bar)
         pygame.draw.rect(screen, (255, 255, 255), (10, 45, self.health_bar_length, 25), 4)
+
+
+    def shoot(self):
+        laser_velocity = self.direction * self.laser_speed + self.velocity
+        laser = Laser(self.position, laser_velocity)
+        self.shoot_laser(laser)
