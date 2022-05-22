@@ -4,9 +4,9 @@ from laser import Laser
 
 
 class Spaceship(GameObject):
-    maneuverability = 3
-    acceleretion = 3
-    laser_speed = 3
+    maneuverability = 5
+    acceleretion = 4
+    laser_speed = 5
 
     def __init__(self, position, shoot_laser):
         # Make a copy of the original UP vector
