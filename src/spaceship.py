@@ -4,7 +4,7 @@ from laser import Laser
 
 
 class Spaceship(GameObject):
-    maneuverability = 2
+    maneuverability = 3
     acceleretion = 3
     laser_speed = 3
 
@@ -17,8 +17,8 @@ class Spaceship(GameObject):
         self.image = pygame.Surface((40, 40))
         self.image.fill((200, 30, 30))
         self.rect = self.image.get_rect(center=(400, 400))
-        self.current_health = 200
-        self.target_health = 500
+        self.current_health = 1000
+        self.target_health = 1000
         self.max_health = 1000
         self.health_bar_length = 400
         self.health_ratio = self.max_health / self.health_bar_length

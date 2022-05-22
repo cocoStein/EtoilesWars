@@ -1,13 +1,15 @@
 import pygame
 from pygame.math import Vector2
+import random
 
 
 pygame.font.init()
+pygame.mixer.init()
 
 # Variables
 WIDTH = 1080
 HEIGHT = 720
-FPS = 120
+FPS = 60
 UP = Vector2(0, -1)
 
 inputMapVelocity = [False, False]
@@ -34,6 +36,13 @@ FONT = pygame.font.Font(None, 32)
 # Sprites
 vso_sprite = pygame.image.load('../assets/imgs/pixil-frame-0 (1).png')
 laser_sprite = pygame.image.load('../assets/imgs/laser.png')
+astro_sprite = pygame.image.load('../assets/imgs/astro_sprite.png')
+
+# Sounds
+damage_sound = pygame.mixer.Sound('../assets/sounds/damage_snd.mp3')
+backR_music = pygame.mixer.music.load('../assets/sounds/bckg_music.mp3')
+laser_sound = pygame.mixer.Sound('../assets/sounds/laser.mp3')
+
 
 def draw_text(text, font, color, surface, x, y):
     # draw text on a screen
@@ -61,3 +70,14 @@ class GameObject:
     def collides_with(self, other_obj):
         distance = self.position.distance_to(other_obj.position)
         return distance < self.radius + other_obj.radius
+
+def random_speed(min, max):
+    speed = random.randint(min, max)
+    angle = random.randint(0, 360)
+    return Vector2(speed, 0).rotate(angle)
+
+def random_position(screen):
+    return Vector2(
+        random.randrange(screen.get_width()),
+        random.randrange(screen.get_height()),
+    )
