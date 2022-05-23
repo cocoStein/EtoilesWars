@@ -34,7 +34,7 @@ mega_police = pygame.font.Font(None, 150)
 FONT = pygame.font.Font(None, 32)
 
 # Sprites
-vso_sprite = pygame.image.load('../assets/imgs/pixil-frame-0 (1).png')
+vso_sprite = pygame.image.load('../assets/imgs/pixil-frame-0(1).png')
 laser_sprite = pygame.image.load('../assets/imgs/laser.png')
 astro_sprite = pygame.image.load('../assets/imgs/astro_sprite.png')
 missil_sprite = pygame.image.load('../assets/imgs/missile.png')
