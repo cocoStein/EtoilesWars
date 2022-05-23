@@ -1,8 +1,7 @@
-import pygame
-
 from settings import *
 from spaceship import Spaceship
 from astero import Astero
+from missile import Explosion
 
 class EtoilesVSO:
   min_distance_spawn = 350
@@ -12,13 +11,22 @@ class EtoilesVSO:
     pygame.mixer.music.play(-1)
     self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
     self.clock = pygame.time.Clock()
+
     self.laser = []
+    self.missile = []
     self.astero = []
+    self.heal = []
+
     self.number_astro = 6
     self.number_astro_kill = 0
-    self.spaceship = Spaceship((WIDTH/2, HEIGHT/2), self.laser.append)
+    self.spaceship = Spaceship((WIDTH/2, HEIGHT/2), self.laser.append, self.missile.append)
+
     self.score = 0
     self.running = True
+
+
+    self.movingS = pygame.sprite.Group()
+    #self.movingS.add(self.missile)
 
     for n in range(self.number_astro):
       while True:
@@ -40,6 +48,7 @@ class EtoilesVSO:
         self._draw()
       else:
         self._endScreen()
+        self._handle_input()
 
   def _handle_input(self):
 
@@ -55,6 +64,9 @@ class EtoilesVSO:
           inputMapRotation[0] = True
         if event.key == pygame.K_d:
           inputMapRotation[1] = True
+        if event.key == pygame.K_q:
+          self.spaceship.shoot_Missile()
+          self.score -= 75
         if event.key == pygame.K_SPACE:
           pygame.mixer.Sound.play(laser_sound)
           self.spaceship.shoot()
@@ -110,33 +122,99 @@ class EtoilesVSO:
 
     for las in self.laser:
       las.move()
-      if las.position.x >= WIDTH: self.laser.remove(las)
-      if las.position.x <= 0: self.laser.remove(las)
-      if las.position.y >= HEIGHT: self.laser.remove(las)
-      if las.position.y <= 0: self.laser.remove(las)
+      if las.position.x >= WIDTH:
+        try:
+          self.laser.remove(las)
+        except:
+          pass
+      if las.position.x <= 0:
+        try:
+          self.laser.remove(las)
+        except:
+          pass
+      if las.position.y >= HEIGHT:
+        try:
+          self.laser.remove(las)
+        except:
+          pass
+      if las.position.y <= 0:
+        try:
+          self.laser.remove(las)
+        except:
+          pass
 
-    if len(self.astero) < self.number_astro:
+    while len(self.astero) < self.number_astro:
       postion = random_position(self.screen)
       if postion.distance_to(self.spaceship.position) >= self.min_distance_spawn:
-        pass
+        break
       self.astero.append(Astero(postion))
 
     if self.spaceship.target_health == 0:
       self.running = False
 
+    if random.randint(0, 1500) == 1: self.heal.append(GameObject(random_position(self.screen), heal_sprite, Vector2(0)))
 
+    for h in self.heal:
+      if self.spaceship.collides_with(h):
+        self.spaceship.get_health(75)
+        self.heal.remove(h)
+
+    for mis in self.missile:
+      mis.move()
+      if mis.position.x >= WIDTH:
+        try:
+          self.movingS.add(Explosion(mis.position.x, mis.position.y))
+          Explosion(mis.position.x, mis.position.y).attack()
+          self.missile.remove(mis)
+
+        except:
+          pass
+      if mis.position.x <= 0:
+        try:
+          self.movingS.add(Explosion(mis.position.x, mis.position.y))
+          Explosion(mis.position.x, mis.position.y).attack()
+          self.missile.remove(mis)
+        except:
+          pass
+      if mis.position.y >= HEIGHT:
+        try:
+          self.movingS.add(Explosion(mis.position.x, mis.position.y))
+          Explosion(mis.position.x, mis.position.y).attack()
+          self.missile.remove(mis)
+        except:
+          pass
+      if mis.position.y <= 0:
+        try:
+          self.movingS.add(Explosion(mis.position.x, mis.position.y))
+          Explosion(mis.position.x, mis.position.y).attack()
+          self.missile.remove(mis)
+        except:
+          pass
+
+      for rock in self.astero:
+        if mis.collides_with(rock):
+          self.movingS.add(Explosion(mis.position.x, mis.position.y))
+          Explosion(mis.position.x, mis.position.y).attack()
+          self.missile.remove(mis)
+          self.astero.remove(rock)
+
+    self.movingS.update(0.2)
   def _draw(self):
     self.screen.fill(DARKGRAY)
     self.spaceship.draw(self.screen)
 
 
+    for h in self.heal: h.draw(self.screen)
     for las in self.laser: las.draw(self.screen)
     for rock in self.astero: rock.draw(self.screen)
+    for mis in self.missile: mis.draw(self.screen)
+
 
 
     self.spaceship.advanced_health(self.screen)
     draw_text("Score:", police, WHITE, self.screen, 870, 50)
     draw_text(str(self.score), police, WHITE, self.screen, 980, 50)
+
     # Flip the display
     self.clock.tick(FPS)
     pygame.display.flip()

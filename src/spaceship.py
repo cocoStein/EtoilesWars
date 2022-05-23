@@ -1,15 +1,18 @@
 from settings import GameObject, Vector2, UP, vso_sprite, pygame, GREEN
 from pygame.transform import rotozoom
 from laser import Laser
+from missile import Missil
 
 
 class Spaceship(GameObject):
     maneuverability = 5
     acceleretion = 4
-    laser_speed = 5
+    laser_speed = 6
+    missile_speed = 4
 
-    def __init__(self, position, shoot_laser):
+    def __init__(self, position, shoot_laser, shoot_missil):
         # Make a copy of the original UP vector
+        self.shoot_missil = shoot_missil
         self.shoot_laser = shoot_laser
         self.direction = Vector2(UP)
         self.angle = 0
@@ -80,3 +83,8 @@ class Spaceship(GameObject):
         laser_velocity = self.direction * self.laser_speed + self.velocity
         laser = Laser(self.position, laser_velocity)
         self.shoot_laser(laser)
+
+    def shoot_Missile(self):
+        missile_velocity = self.direction * self.missile_speed + self.velocity
+        missile = Missil(self.position, missile_velocity)
+        self.shoot_missil(missile)

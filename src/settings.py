@@ -37,6 +37,21 @@ FONT = pygame.font.Font(None, 32)
 vso_sprite = pygame.image.load('../assets/imgs/pixil-frame-0 (1).png')
 laser_sprite = pygame.image.load('../assets/imgs/laser.png')
 astro_sprite = pygame.image.load('../assets/imgs/astro_sprite.png')
+missil_sprite = pygame.image.load('../assets/imgs/missile.png')
+heal_sprite = pygame.image.load('../assets/imgs/heal.png')
+heal_sprite = pygame.transform.scale(heal_sprite, (64,64))
+
+explo1 = pygame.image.load('../assets/imgs/explo-1.png')
+explo2 = pygame.image.load('../assets/imgs/explo-2.png')
+explo3 = pygame.image.load('../assets/imgs/explo-3.png')
+explo4 = pygame.image.load('../assets/imgs/explo-4.png')
+explo5 = pygame.image.load('../assets/imgs/explo-5.png')
+explo6 = pygame.image.load('../assets/imgs/explo-6.png')
+explo7 = pygame.image.load('../assets/imgs/explo-7.png')
+explo8 = pygame.image.load('../assets/imgs/explo-8.png')
+explo9 = pygame.image.load('../assets/imgs/explo-9.png')
+explo10 = pygame.image.load('../assets/imgs/explo-10.png')
+
 
 # Sounds
 damage_sound = pygame.mixer.Sound('../assets/sounds/damage_snd.mp3')
