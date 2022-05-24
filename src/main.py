@@ -6,6 +6,9 @@ from missile import Explosion
 class EtoilesVSO:
   min_distance_spawn = 350
   number_star = 200
+  laser_cost = 5
+  missile_cost = 75
+
   def __init__(self):
 
     """
@@ -19,8 +22,8 @@ class EtoilesVSO:
 
 
     self._init_pygame()
-    pygame.mixer.music.play(-1)
-    pygame.mixer.Sound.play(intro_sound)
+    # pygame.mixer.music.play(-1)
+    # pygame.mixer.Sound.play(intro_sound)
     self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
     self.background = (pygame.Surface(self.screen.get_size())).convert()
     self.clock = pygame.time.Clock()
@@ -38,7 +41,7 @@ class EtoilesVSO:
     self.number_astro_kill = 0
     self.spaceship = Spaceship((WIDTH/2, HEIGHT/2), self.laser.append, self.missile.append)
 
-    self.score = 0
+    self.score = 500
     self.running = True
 
     #self.misi = Explosion(posX=500, posY=200)
@@ -88,24 +91,28 @@ class EtoilesVSO:
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_w:
           inputMapVelocity[0] = True
-        if event.key == pygame.K_s:
-          inputMapVelocity[1] = True
+        # if event.key == pygame.K_s:
+        #   inputMapVelocity[1] = True
         if event.key == pygame.K_a:
           inputMapRotation[0] = True
         if event.key == pygame.K_d:
           inputMapRotation[1] = True
+
         if event.key == pygame.K_q:
-          
-          self.spaceship.shoot_Missile()
-          self.score -= 75
-          #misil = Explosion(self.spaceship.position.x, self.spaceship.position.y)
-          #self.movingS.add(misil)
-          #misil.attack()
+          #Check if the player has enough points to shoot
+          if self.score >= self.missile_cost:
+            #Shoot missile
+            self.spaceship.shoot_Missile()
+            self.score -= self.missile_cost
+
         if event.key == pygame.K_SPACE:
-          pygame.mixer.Sound.play(laser_sound)
-          self.spaceship.shoot()
-          self.score -= 5
-        if event.key == pygame.K_UP:
+          #Check if the player has enough points to shoot
+          if self.score >= self.laser_cost:
+            #Shoot laser
+            pygame.mixer.Sound.play(laser_sound)
+            self.spaceship.shoot()
+            self.score -= self.laser_cost
+
           #self.misi.attack()
           self.spaceship.get_health(200)
         if event.key == pygame.K_DOWN:

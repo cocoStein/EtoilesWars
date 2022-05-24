@@ -98,7 +98,7 @@ class Spaceship(GameObject):
         Définit la vitesse, direction et accélération des lasers tirés
         """
         laser_velocity = self.direction * self.laser_speed + self.velocity
-        laser = Laser(self.position, laser_velocity)
+        laser = Laser(self.position, laser_velocity, self.direction.angle_to(Vector2(0)))
         self.shoot_laser(laser)
 
     def shoot_Missile(self):
@@ -106,5 +106,5 @@ class Spaceship(GameObject):
         Définit la vitesse, direction et accélération du missile 
         """
         missile_velocity = self.direction * self.missile_speed + self.velocity
-        missile = Missil(self.position, missile_velocity)
+        missile = Missil(self.position, missile_velocity, self.direction.angle_to(Vector2(0)))
         self.shoot_missil(missile)

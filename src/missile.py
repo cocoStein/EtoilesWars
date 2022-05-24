@@ -4,11 +4,11 @@ from settings import GameObject, Vector2, explo1, explo2, explo3, explo4, explo5
 
 class Missil(GameObject):
 
-    def __init__(self, position, velocity):
+    def __init__(self, position, velocity,  angle):
+        super().__init__(position, pygame.transform.rotate(missil_sprite, angle), velocity)
         """
         Initialise le missile et ses différenttes caractéristiques
         """
-        super().__init__(position, missil_sprite, velocity)
 
 class Explosion(pygame.sprite.Sprite):
 
