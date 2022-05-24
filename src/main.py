@@ -1,4 +1,3 @@
-from signal import alarm
 from settings import *
 from spaceship import Spaceship
 from astero import Astero
@@ -312,3 +311,4 @@ class EtoilesVSO:
 
 if __name__ == "__main__":
   EtoilesVSO().main_loop()
+
