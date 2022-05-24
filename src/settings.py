@@ -57,6 +57,8 @@ explo10 = pygame.image.load('../assets/imgs/explo-10.png')
 damage_sound = pygame.mixer.Sound('../assets/sounds/damage_snd.mp3')
 backR_music = pygame.mixer.music.load('../assets/sounds/bckg_music.mp3')
 laser_sound = pygame.mixer.Sound('../assets/sounds/laser.mp3')
+intro_sound = pygame.mixer.Sound('../assets/sounds/amongUS.mp3')
+low_lifeMUsic = pygame.mixer.Sound('../assets/sounds/alarm_AUS.mp3')
 
 
 def draw_text(text, font, color, surface, x, y):
