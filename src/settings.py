@@ -42,7 +42,9 @@ laser_sprite = pygame.image.load('../assets/imgs/laser.png')
 astro_sprite = pygame.image.load('../assets/imgs/astro_sprite.png')
 missil_sprite = pygame.image.load('../assets/imgs/missile.png')
 heal_sprite = pygame.image.load('../assets/imgs/heal.png')
-heal_sprite = pygame.transform.scale(heal_sprite, (64,64))
+heal_sprite = pygame.transform.scale(heal_sprite, (32, 32))
+boss_sprite = pygame.image.load('../assets/imgs/boss.png')
+
 
 explo1 = pygame.image.load('../assets/imgs/explo-1.png')
 explo2 = pygame.image.load('../assets/imgs/explo-2.png')
