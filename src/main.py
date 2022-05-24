@@ -1,3 +1,4 @@
+from signal import alarm
 from settings import *
 from spaceship import Spaceship
 from astero import Astero
@@ -95,6 +96,7 @@ class EtoilesVSO:
         if event.key == pygame.K_d:
           inputMapRotation[1] = True
         if event.key == pygame.K_q:
+          
           self.spaceship.shoot_Missile()
           self.score -= 75
           #misil = Explosion(self.spaceship.position.x, self.spaceship.position.y)
