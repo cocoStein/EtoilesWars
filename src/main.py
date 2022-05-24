@@ -7,6 +7,14 @@ class EtoilesVSO:
   min_distance_spawn = 350
 
   def __init__(self):
+
+    """
+    Fonction qui sert a créer tous les objets qui seront actifs dans le jeu et les instancier
+    Laser : laser tiré par le vaisseau 
+    missile : missile qui pourra endommager le vaisseau 
+    astero : asteroide qui se déplacera sur dans le jeu et qui provoquera des dégâts au vaisseau 
+    heal : entité qui va régénérer des HP du vaisseau 
+    """
     self._init_pygame()
     pygame.mixer.music.play(-1)
     self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -36,11 +44,17 @@ class EtoilesVSO:
       self.astero.append(Astero(postion))
 
   def _init_pygame(self):
+    """
+    initailise le jeu 
+    """
     pygame.init()
     pygame.display.set_caption("Etoiles Vso")
     pygame.time.set_timer(pygame.USEREVENT, 1000)
 
   def main_loop(self):
+    """
+    Fait que si on ne perd pas le jeu continue 
+    """
     while True:
       if self.running == True:
         self._handle_input()
@@ -51,6 +65,9 @@ class EtoilesVSO:
         self._handle_input()
 
   def _handle_input(self):
+    """
+    Va s'occuper des mouvements lorsque l'on appuie sur W,A,D et espace 
+    """
 
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -86,6 +103,11 @@ class EtoilesVSO:
           inputMapRotation[1] = False
 
   def _process_game_logic(self):
+    """
+    Définit toute la logique du jeu, faire que les astéroides font des dégâts lors de la collision 
+    Rock : entité représentant un astéroide 
+    las : laser tiré par le vaisseau 
+    """
 
     # Rotation spaceship
     if inputMapRotation[0]: self.spaceship.rotate(clockwise=False)
@@ -203,6 +225,13 @@ class EtoilesVSO:
     self.screen.fill(DARKGRAY)
     self.spaceship.draw(self.screen)
 
+    """
+    Dessine le background et tous les objets qui ont une utilité
+    Heal : objet qui sert a gagner des hp 
+    Las : le laser qui va etre tiré par la vaisseau 
+    Rock : asteroide 
+    Missile : missile qui peut exploser et faire des dêgats
+    """
 
     for h in self.heal: h.draw(self.screen)
     for las in self.laser: las.draw(self.screen)
@@ -221,6 +250,9 @@ class EtoilesVSO:
 
   def _endScreen(self):
     self.screen.fill(BLACK)
+    """
+    L'écran d'affichage quand le jeu est terminé   
+    """
 
     draw_text("GAME OVER", mega_police, RED, self.screen, WIDTH/2 - 300, HEIGHT/2 - 300)
     draw_text("Score:", police, WHITE, self.screen, 150, 200)

@@ -5,11 +5,17 @@ from settings import GameObject, Vector2, explo1, explo2, explo3, explo4, explo5
 class Missil(GameObject):
 
     def __init__(self, position, velocity):
+        """
+        Initialise le missile et ses différenttes caractéristiques
+        """
         super().__init__(position, missil_sprite, velocity)
 
 class Explosion(pygame.sprite.Sprite):
 
     def __init__(self, posX, posY):
+        """
+        Les images qui se déplacent sans exploser et crée le cas si il explosait
+        """
         super().__init__()
         self.attack_animation = False
         self.sprites = []
@@ -32,9 +38,15 @@ class Explosion(pygame.sprite.Sprite):
 
     def attack(self):
         self.attack_animation = True
+        """
+        Si le vaisseau est touché une animation se produira
+        """
 
 
     def update(self, speed):
+        """
+        Update les 10 sprite pour faire l'animation afin qu'elle ne se répète pas
+        """
         if self.attack_animation == True:
             self.current_sprite += speed
             print("asd")

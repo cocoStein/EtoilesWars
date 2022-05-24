@@ -61,7 +61,9 @@ laser_sound = pygame.mixer.Sound('../assets/sounds/laser.mp3')
 
 def draw_text(text, font, color, surface, x, y):
     # draw text on a screen
-
+    """
+    Ecrit du texte quel qu'il soit, cette fonction servira aussi pour le game over 
+    """
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
     textrect.topleft = (x, y)
@@ -70,6 +72,9 @@ def draw_text(text, font, color, surface, x, y):
 
 class GameObject:
     def __init__(self, position, sprite, velocity):
+        """
+        
+        """
         self.position = Vector2(position)
         self.sprite = sprite
         self.radius = sprite.get_width() / 2
