@@ -190,6 +190,9 @@ class EtoilesVSO:
     
 
   def _draw(self):
+    """
+    Background et le dessin des différents objets présent dans le jeu
+    """
     self.screen.fill(DARKGRAY)
     self.spaceship.draw(self.screen)
 
@@ -212,6 +215,9 @@ class EtoilesVSO:
     pygame.display.flip()
 
   def _endScreen(self):
+    """
+    Ecran de fin, lorsqu'on a perdu
+    """
     self.screen.fill(BLACK)
 
     draw_text("GAME OVER", mega_police, RED, self.screen, WIDTH/2 - 300, HEIGHT/2 - 300)
