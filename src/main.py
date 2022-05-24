@@ -1,4 +1,3 @@
-from signal import alarm
 from settings import *
 from spaceship import Spaceship
 from astero import Astero
@@ -6,7 +5,7 @@ from missile import Explosion
 
 class EtoilesVSO:
   min_distance_spawn = 350
-  
+  number_star = 200
   def __init__(self):
 
     """
@@ -16,16 +15,24 @@ class EtoilesVSO:
     astero : asteroide qui se déplacera sur dans le jeu et qui provoquera des dégâts au vaisseau 
     heal : entité qui va régénérer des HP du vaisseau 
     """
+
+
+
     self._init_pygame()
     pygame.mixer.music.play(-1)
     pygame.mixer.Sound.play(intro_sound)
     self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    self.background = (pygame.Surface(self.screen.get_size())).convert()
     self.clock = pygame.time.Clock()
 
     self.laser = []
     self.missile = []
     self.astero = []
     self.heal = []
+    self.stars = [
+        [random.randint(0, WIDTH),random.randint(0, HEIGHT)]
+        for x in range(self.number_star)
+    ]
 
     self.number_astro = 6
     self.number_astro_kill = 0
@@ -34,9 +41,9 @@ class EtoilesVSO:
     self.score = 0
     self.running = True
 
-    self.misi = Explosion(500, 200)
+    #self.misi = Explosion(posX=500, posY=200)
     self.movingS = pygame.sprite.Group()
-    self.movingS.add(self.misi)
+    #self.movingS.add(self.misi)
 
     for n in range(self.number_astro):
       while True:
@@ -49,9 +56,13 @@ class EtoilesVSO:
     """
     initailise le jeu 
     """
+
+
     pygame.init()
     pygame.display.set_caption("Etoiles Vso")
     pygame.time.set_timer(pygame.USEREVENT, 1000)
+
+
 
   def main_loop(self):
     """
@@ -68,7 +79,7 @@ class EtoilesVSO:
 
   def _handle_input(self):
     """
-    Va s'occuper des mouvements lorsque l'on appuie sur W,A,D et espace 
+    Va s'occuper des mouvements lorsque l'on appuie sur W,A,D et espace
     """
 
     for event in pygame.event.get():
@@ -84,15 +95,17 @@ class EtoilesVSO:
         if event.key == pygame.K_d:
           inputMapRotation[1] = True
         if event.key == pygame.K_q:
-          
           self.spaceship.shoot_Missile()
           self.score -= 75
+          #misil = Explosion(self.spaceship.position.x, self.spaceship.position.y)
+          #self.movingS.add(misil)
+          #misil.attack()
         if event.key == pygame.K_SPACE:
           pygame.mixer.Sound.play(laser_sound)
           self.spaceship.shoot()
           self.score -= 5
         if event.key == pygame.K_UP:
-          self.misi.attack()
+          #self.misi.attack()
           self.spaceship.get_health(200)
         if event.key == pygame.K_DOWN:
           self.spaceship.get_damage(200)
@@ -141,8 +154,14 @@ class EtoilesVSO:
     for las in self.laser:
       for rock in self.astero:
         if las.collides_with(rock):
-          self.astero.remove(rock)
-          self.laser.remove(las)
+          try:
+            self.astero.remove(rock)
+          except:
+            pass
+          try:
+            self.laser.remove(las)
+          except:
+            pass
           self.score += 50
           self.number_astro_kill += 1
 
@@ -185,106 +204,86 @@ class EtoilesVSO:
         self.spaceship.get_health(75)
         self.heal.remove(h)
 
-    if self.spaceship.target_health <= 200:
-      pygame.mixer.Sound.play(low_lifeMUsic)
-    
-
-  def _draw(self):
-    self.screen.fill(DARKGRAY)
-    self.spaceship.draw(self.screen)
-
-    self.movingS.update(0.2)
-    self.movingS.draw
-
-    for h in self.heal: h.draw(self.screen)
-    for las in self.laser: las.draw(self.screen)
-    for rock in self.astero: rock.draw(self.screen)
-    #for mis in self.missile: mis.draw(self.screen)
-
-
-
-    self.spaceship.advanced_health(self.screen)
-    draw_text("Score:", police, WHITE, self.screen, 870, 50)
-    draw_text(str(self.score), police, WHITE, self.screen, 980, 50)
-
-    # Flip the display
-    self.clock.tick(FPS)
-    pygame.display.flip()
-
-  def _endScreen(self):
-    self.screen.fill(BLACK)
-
-    draw_text("GAME OVER", mega_police, RED, self.screen, WIDTH/2 - 300, HEIGHT/2 - 300)
-    draw_text("Score:", police, WHITE, self.screen, 150, 200)
-    draw_text(str(self.score), police, WHITE, self.screen, 300, 200)
-    draw_text("Astéroides détruits:", police, WHITE, self.screen, 150, 250)
-    draw_text(str(self.number_astro_kill), police, WHITE, self.screen, 500, 250)
-
-    self.clock.tick(FPS)
-    pygame.display.flip()
-
-if __name__ == "__main__":
-  EtoilesVSO().main_loop()
-
-
-
-
-for mis in self.missile:
+    for mis in self.missile:
       mis.move()
       if mis.position.x >= WIDTH:
         try:
-          self.movingS.add(Explosion(mis.position.x, mis.position.y))
-          Explosion(mis.position.x, mis.position.y).attack()
+          misil = Explosion(mis.position.x, mis.position.y)
+          self.movingS.add(misil)
+          misil.attack()
           self.missile.remove(mis)
 
         except:
           pass
       if mis.position.x <= 0:
         try:
-          self.movingS.add(Explosion(mis.position.x, mis.position.y))
-          Explosion(mis.position.x, mis.position.y).attack()
+          misil = Explosion(mis.position.x, mis.position.y)
+          self.movingS.add(misil)
+          misil.attack()
           self.missile.remove(mis)
         except:
           pass
       if mis.position.y >= HEIGHT:
         try:
-          self.movingS.add(Explosion(mis.position.x, mis.position.y))
-          Explosion(mis.position.x, mis.position.y).attack()
+          misil = Explosion(mis.position.x, mis.position.y)
+          self.movingS.add(misil)
+          misil.attack()
           self.missile.remove(mis)
         except:
           pass
       if mis.position.y <= 0:
         try:
-          self.movingS.add(Explosion(mis.position.x, mis.position.y))
-          Explosion(mis.position.x, mis.position.y).attack()
+          misil = Explosion(mis.position.x, mis.position.y)
+          self.movingS.add(misil)
+          misil.attack()
           self.missile.remove(mis)
         except:
+          pass
       for rock in self.astero:
-        if mis.collides_with(rock):
-          self.movingS.add(Explosion(mis.position.x, mis.position.y))
-          Explosion(mis.position.x, mis.position.y).attack()
+        if mis.collides_with(rock) or mis.position.distance_to(rock.position) <= 64:
+          misil = Explosion(mis.position.x, mis.position.y)
+          self.movingS.add(misil)
+          misil.attack()
           self.missile.remove(mis)
           self.astero.remove(rock)
 
-    self.movingS.update(0.2)
+    if self.spaceship.target_health <= 200:
+      pygame.mixer.Sound.play(low_lifeMUsic)
+
+    for n in self.movingS:
+      if n.attack_animation == False:
+        self.movingS.remove(n)
   def _draw(self):
-    self.screen.fill(DARKGRAY)
+    """
+        Dessine le background et tous les objets qui ont une utilité
+        Heal : objet qui sert a gagner des hp
+        Las : le laser qui va etre tiré par la vaisseau
+        Rock : asteroide
+        Missile : missile qui peut exploser et faire des dêgats
+    """
+
+    self.background.fill(BLACK)
+    for star in self.stars:
+      pygame.draw.line(self.background,
+                       WHITE, (star[0], star[1]), (star[0], star[1]))
+      star[0] = star[0] - 1
+      if star[0] < 0:
+        star[0] = WIDTH
+        star[1] = random.randint(0, HEIGHT)
+    self.screen.blit(self.background, (0, 0))
+
+
     self.spaceship.draw(self.screen)
 
-    """
-    Dessine le background et tous les objets qui ont une utilité
-    Heal : objet qui sert a gagner des hp 
-    Las : le laser qui va etre tiré par la vaisseau 
-    Rock : asteroide 
-    Missile : missile qui peut exploser et faire des dêgats
-    """
+
 
     for h in self.heal: h.draw(self.screen)
     for las in self.laser: las.draw(self.screen)
     for rock in self.astero: rock.draw(self.screen)
     for mis in self.missile: mis.draw(self.screen)
 
-
+    self.movingS.update(0.2)
+    self.movingS.draw(self.screen)
 
     self.spaceship.advanced_health(self.screen)
     draw_text("Score:", police, WHITE, self.screen, 870, 50)
@@ -295,10 +294,10 @@ for mis in self.missile:
     pygame.display.flip()
 
   def _endScreen(self):
+    """
+        L'écran d'affichage quand le jeu est terminé
+    """
     self.screen.fill(BLACK)
-    """
-    L'écran d'affichage quand le jeu est terminé   
-    """
 
     draw_text("GAME OVER", mega_police, RED, self.screen, WIDTH/2 - 300, HEIGHT/2 - 300)
     draw_text("Score:", police, WHITE, self.screen, 150, 200)
@@ -311,4 +310,3 @@ for mis in self.missile:
 
 if __name__ == "__main__":
   EtoilesVSO().main_loop()
-          self.astero.remove(rock)

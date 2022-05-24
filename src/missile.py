@@ -17,6 +17,8 @@ class Explosion(pygame.sprite.Sprite):
         Les images qui se déplacent sans exploser et crée le cas si il explosait
         """
         super().__init__()
+        self.posX = posX
+        self.posY = posY
         self.attack_animation = False
         self.sprites = []
         self.sprites.append(explo1)
@@ -49,9 +51,7 @@ class Explosion(pygame.sprite.Sprite):
         """
         if self.attack_animation == True:
             self.current_sprite += speed
-            print("asd")
             if int(self.current_sprite) >= len(self.sprites):
-                print(1)
                 self.current_sprite = 0
                 self.attack_animation = False
 

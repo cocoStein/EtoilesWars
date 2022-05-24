@@ -5,6 +5,9 @@ import random
 
 pygame.font.init()
 pygame.mixer.init()
+#pygame.mixer.pre_init(44100, 16, 2, 4096)
+
+
 
 # Variables
 WIDTH = 1080
