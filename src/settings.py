@@ -64,7 +64,7 @@ low_lifeMUsic = pygame.mixer.Sound('../assets/sounds/alarm_AUS.mp3')
 def draw_text(text, font, color, surface, x, y):
     # draw text on a screen
     """
-    Ecrit du texte quel qu'il soit, cette fonction servira aussi pour le game over 
+    Ecrit du texte quel qu'il soit, cette fonction servira en particulier pour le game over 
     """
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -75,7 +75,10 @@ def draw_text(text, font, color, surface, x, y):
 class GameObject:
     def __init__(self, position, sprite, velocity):
         """
-        
+        Foncion servant a initier le déplacement, la vitesse et le sprite des objets 
+        position : position de l'objet dans le jeu 
+        sprite : sprite de l'objet 
+        velocity : vitesse/acceleration de l'objet 
         """
         self.position = Vector2(position)
         self.sprite = sprite
@@ -83,22 +86,40 @@ class GameObject:
         self.velocity = Vector2(velocity)
 
     def draw(self, surface):
+        """
+        -
+        """
         blit_position = self.position - Vector2(self.radius)
         surface.blit(self.sprite, blit_position)
 
     def move(self):
+        """
+        Détermine, grace a la position et la vitesse, l'endroit où se trouve un objet
+        """
         self.position = self.position + self.velocity
 
     def collides_with(self, other_obj):
+        """
+        Instanciation d'une collision quelconque 
+        other_obj : n'importe quel objet qui peut produire une collision (vaisseau par exemple)
+        """
         distance = self.position.distance_to(other_obj.position)
         return distance < self.radius + other_obj.radius
 
 def random_speed(min, max):
+    """
+    définit une vitesse aléatoire entre 2 vitesses choisies au préalable
+    min : vitesse minimum
+    max : vitesse maximum
+    """
     speed = random.randint(min, max)
     angle = random.randint(0, 360)
     return Vector2(speed, 0).rotate(angle)
 
 def random_position(screen):
+    """
+    Va faire que les astéroides ont une trajectoire aléatoire 
+    """
     return Vector2(
         random.randrange(screen.get_width()),
         random.randrange(screen.get_height()),

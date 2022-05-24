@@ -30,6 +30,9 @@ class Spaceship(GameObject):
         super().__init__(position, vso_sprite, Vector2(0))
 
     def rotate(self, clockwise=True):
+        """
+        Fait que le vaisseau tourne quand voulu 
+        """
         sign = 1 if clockwise else -1
         self.angle = self.maneuverability * sign
         self.direction.rotate_ip(self.angle)
@@ -45,18 +48,29 @@ class Spaceship(GameObject):
         self.velocity += self.direction * self.acceleretion
 
     def get_damage(self, amount):
+        """
+        Encaisse les dégâts subis par le vaisseau 
+        Amount : Total des dégâts qui vont être encaissés 
+        """
         if self.target_health > 0:
             self.target_health -= amount
         if self.target_health < 0:
             self.target_health = 0
 
     def get_health(self, amount):
+        """
+        Sert pour soigner le vaisseau d'un certain nombre de HP 
+        Amount : Taux de soins (valeur)
+        """
         if self.target_health < self.max_health:
             self.target_health += amount
         if self.target_health > self.max_health:
             self.target_health = self.max_health
 
     def advanced_health(self, screen):
+        """
+        Dessin de la barre de vie 
+        """
         transition_width = 0
         transition_color = (255, 0, 0)
 
@@ -80,11 +94,17 @@ class Spaceship(GameObject):
 
 
     def shoot(self):
+        """
+        Définit la vitesse, direction et accélération des lasers tirés
+        """
         laser_velocity = self.direction * self.laser_speed + self.velocity
         laser = Laser(self.position, laser_velocity)
         self.shoot_laser(laser)
 
     def shoot_Missile(self):
+        """
+        Définit la vitesse, direction et accélération du missile 
+        """
         missile_velocity = self.direction * self.missile_speed + self.velocity
         missile = Missil(self.position, missile_velocity)
         self.shoot_missil(missile)
