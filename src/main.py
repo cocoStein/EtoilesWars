@@ -1,3 +1,4 @@
+from laser import Laser
 from settings import *
 from spaceship import Spaceship
 from astero import Astero
@@ -31,6 +32,7 @@ class EtoilesVSO:
 
     self.laser = []
     self.laserBoss = []
+    self.nbr_LBoss = 0
     self.missile = []
     self.astero = []
     self.heal = []
@@ -44,7 +46,7 @@ class EtoilesVSO:
     self.spaceship = Spaceship((WIDTH/2, HEIGHT/2), self.laser.append, self.missile.append)
     self.boss = Boss((WIDTH/2, 50), self.laserBoss.append)
 
-    self.score = 500
+    self.score = 655
     self.running = True
     self.boss_fight = False
 
@@ -107,6 +109,7 @@ class EtoilesVSO:
           #Check if the player has enough points to shoot
           if self.score >= self.missile_cost:
             #Shoot missile
+            pygame.mixer.Sound.play(explosionS)
             self.spaceship.shoot_Missile()
             self.score -= self.missile_cost
 
@@ -371,7 +374,7 @@ class EtoilesVSO:
     if self.spaceship.target_health == 0:
       self.running = False
 
-    if random.randint(0, 1500) == 1: self.heal.append(GameObject(random_position(self.screen), heal_sprite, Vector2(0)))
+    if random.randint(0, 1000) == 1: self.heal.append(GameObject(random_position(self.screen), heal_sprite, Vector2(0)))
 
     for h in self.heal:
       if self.spaceship.collides_with(h):
@@ -436,10 +439,29 @@ class EtoilesVSO:
         self.movingS.remove(n)
 
     if self.boss.target_health <= 0:
+    
       self.boss_fight = False
       self.score += 1000
       self.spaceship.get_health(500)
 
+    if  random.randint(0, 5) == 1 and self.nbr_LBoss <= 10:
+      self.nbr_LBoss += 1
+      self.boss.shoot()
+      #self.laserBoss.append( Laser(0, (self.boss.position.x, self.boss.position.y)))
+    
+    if random.randrange(0, 100) == 1:
+      self.nbr_LBoss = 0
+    
+
+    for las in self.laserBoss:
+      las.move()
+      if las.collides_with(self.spaceship):
+        self.spaceship.get_damage(50)
+        try:
+          self.laserBoss.remove(las)
+        except:
+          pass
+      
   def _draw_Boss(self):
     self.background.fill(BLACK)
     for star in self.stars:
@@ -458,6 +480,9 @@ class EtoilesVSO:
     for las in self.laser: las.draw(self.screen)
     for rock in self.astero: rock.draw(self.screen)
     for mis in self.missile: mis.draw(self.screen)
+
+    for n in self.laserBoss:
+      n.draw(self.screen)
 
     self.spaceship.advanced_health(self.screen)
     self.boss.advanced_health(self.screen)

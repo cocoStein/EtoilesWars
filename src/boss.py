@@ -6,7 +6,7 @@ class Boss(GameObject):
     def __init__(self, position, shoot_laser):
         # Make a copy of the original UP vector
         self.shoot_laser = shoot_laser
-        self.direction = Vector2(UP)
+        self.direction = Vector2(-UP)
         self.angle = 0
 
         self.current_health = 1000
@@ -70,3 +70,4 @@ class Boss(GameObject):
         laser_velocity = self.direction * self.laser_speed + self.velocity
         laser = Laser(self.position, laser_velocity, self.direction.angle_to(Vector2(0)))
         self.shoot_laser(laser)
+    
