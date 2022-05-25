@@ -46,7 +46,7 @@ class EtoilesVSO:
     self.spaceship = Spaceship((WIDTH/2, HEIGHT/2), self.laser.append, self.missile.append)
     self.boss = Boss((WIDTH/2, 50), self.laserBoss.append)
 
-    self.score = 655
+    self.score = 50
     self.running = True
     self.boss_fight = False
 
